@@ -1,4 +1,4 @@
-package com.otagrove.anomaly_finder_backend.controllers;
+package com.ryazangrove.anomaly_finder_backend.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

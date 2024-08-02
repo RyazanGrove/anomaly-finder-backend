@@ -1,4 +1,4 @@
-package com.otagrove.anomaly_finder_backend;
+package com.ryazangrove.anomaly_finder_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
