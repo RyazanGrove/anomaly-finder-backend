@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryazangrove.anomaly_finder_backend.interfaces.ScoreRepository;
 import com.ryazangrove.anomaly_finder_backend.models.Score;
+import com.ryazangrove.anomaly_finder_backend.repository.ScoreRepository;
 
 import java.util.List;
 
