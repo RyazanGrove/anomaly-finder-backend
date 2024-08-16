@@ -11,39 +11,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ryazangrove.anomaly_finder_backend.models.Score;
-import com.ryazangrove.anomaly_finder_backend.repository.ScoreRepository;
+import com.ryazangrove.anomaly_finder_backend.services.ScoreService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/score")
 public class ScoreController {
 
     @Autowired
-    private ScoreRepository scoreRepository;
+    private ScoreService scoreService;
 
     @GetMapping
-    public ResponseEntity<List<Score>> getScores() {
-        var score = scoreRepository.findAll();
-        return ResponseEntity.ok(score);
+    public ResponseEntity<List<Score>> get() {
+        return ResponseEntity.ok(scoreService.getScores());
     }
 
     @PostMapping
-    public ResponseEntity<Void> postScore(@RequestBody Score score) {
-        scoreRepository.save(score);
+    public ResponseEntity<Void> post(@RequestBody Score score) {
+        scoreService.saveScore(score);
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getScore(@PathVariable Long id) {
-        Optional<Score> score = scoreRepository.findById(id);
-
-        if (score.isPresent()) {
-            return ResponseEntity.ok(score.get());
-        } else {
-            // Return a custom error message with a 404 status
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Score not found with id: " + id);
+    public ResponseEntity<?> getOne(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(scoreService.getScore(id));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 }
