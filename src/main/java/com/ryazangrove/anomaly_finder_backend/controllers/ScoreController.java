@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.ryazangrove.anomaly_finder_backend.exceptions.ScoreNotFoundException;
 import com.ryazangrove.anomaly_finder_backend.models.Score;
 import com.ryazangrove.anomaly_finder_backend.services.ScoreService;
 
@@ -37,7 +38,7 @@ public class ScoreController {
     public ResponseEntity<?> getOne(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(scoreService.getScore(id));
-        } catch (Exception ex) {
+        } catch (ScoreNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }

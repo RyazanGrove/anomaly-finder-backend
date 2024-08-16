@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ryazangrove.anomaly_finder_backend.exceptions.ScoreNotFoundException;
 import com.ryazangrove.anomaly_finder_backend.models.Score;
 import com.ryazangrove.anomaly_finder_backend.repository.ScoreRepository;
 
@@ -22,7 +23,7 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public Score getScore(Long id) throws Exception {
-        return scoreRepository.findById(id).orElseThrow(() -> new Exception("Score not found with id: " + id));
+    public Score getScore(Long id) throws ScoreNotFoundException {
+        return scoreRepository.findById(id).orElseThrow(() -> new ScoreNotFoundException(id));
     }
 }
