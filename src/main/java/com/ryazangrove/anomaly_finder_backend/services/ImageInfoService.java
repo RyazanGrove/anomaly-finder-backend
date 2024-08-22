@@ -13,6 +13,10 @@ public class ImageInfoService {
     @Autowired
     private ImageInfoRepository imageInfoRepository;
 
+    public void saveImageInfo(ImageInfo info) {
+        imageInfoRepository.save(info);
+    }
+
     public ImageInfo getImageInfo(Long id) throws ImageInfoNotFoundException {
         return imageInfoRepository.findById(id).orElseThrow(() -> new ImageInfoNotFoundException(id));
     }
