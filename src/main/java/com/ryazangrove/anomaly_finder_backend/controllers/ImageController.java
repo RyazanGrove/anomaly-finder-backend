@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryazangrove.anomaly_finder_backend.exceptions.ImageInfoNotFoundException;
+import com.ryazangrove.anomaly_finder_backend.exceptions.ImageNotFoundException;
 import com.ryazangrove.anomaly_finder_backend.services.ImageInfoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.util.StreamUtils;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -26,16 +27,16 @@ public class ImageController {
     @Autowired
     private ImageInfoService imageInfoService;
 
-    @GetMapping("/{id}")
-    public void serveImageHandler(@PathVariable Long id, HttpServletResponse response){
+    @GetMapping("/{imageFileName}")
+    public ResponseEntity<?> serveImageHandler(@PathVariable String imageFileName, HttpServletResponse response) throws IOException {
         try { 
-            InputStream fileInputStream= new FileInputStream("src\\main\\resources\\images\\1.jpg"); 
+            InputStream image = imageInfoService.loadImage(imageFileName);
             response.setContentType(MediaType.IMAGE_JPEG_VALUE); 
-            StreamUtils.copy(fileInputStream,response.getOutputStream()); 
-        } catch(Exception e) { 
-            e.printStackTrace(); 
-            response.setStatus(404);
-        } 
+            StreamUtils.copy(image,response.getOutputStream());  
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (ImageInfoNotFoundException | ImageNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     @GetMapping("/info/{id}")
