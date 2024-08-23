@@ -32,7 +32,7 @@ public class ImageInfoService {
         if (imageInfo.isEmpty()) throw new ImageInfoNotFoundException(imageFileName);
         String imageType = imageInfo.get().getType();
         try{
-            InputStream fileInputStream = new FileInputStream("src\\main\\resources\\images\\" + imageFileName + "." + imageType);
+            InputStream fileInputStream = new FileInputStream("src/main/resources/images/" + imageFileName + "." + imageType);
             return fileInputStream;
         } catch (FileNotFoundException ex) {
             throw new ImageNotFoundException(imageFileName);
