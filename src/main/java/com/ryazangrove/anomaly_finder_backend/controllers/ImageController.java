@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ryazangrove.anomaly_finder_backend.exceptions.ImageInfoNotFoundException;
 import com.ryazangrove.anomaly_finder_backend.exceptions.ImageNotFoundException;
+import com.ryazangrove.anomaly_finder_backend.models.ImageInfo;
 import com.ryazangrove.anomaly_finder_backend.services.ImageInfoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @RestController
 @RequestMapping("/image")
@@ -46,5 +48,10 @@ public class ImageController {
         } catch (ImageInfoNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
+    }
+
+    @GetMapping("/info/generate")
+    public ResponseEntity<List<ImageInfo>> getGeneratedImageInfos() {
+        return ResponseEntity.ok(imageInfoService.getRandomImageInfo());
     }
 }
