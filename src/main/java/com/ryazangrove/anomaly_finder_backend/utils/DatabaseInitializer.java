@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.ryazangrove.anomaly_finder_backend.models.ImageInfo;
 import com.ryazangrove.anomaly_finder_backend.models.Score;
+import com.ryazangrove.anomaly_finder_backend.models.ImageInfo.TargetArea;
 import com.ryazangrove.anomaly_finder_backend.repository.ImageInfoRepository;
 import com.ryazangrove.anomaly_finder_backend.repository.ScoreRepository;
 
@@ -22,19 +23,27 @@ public class DatabaseInitializer {
     @PostConstruct
     public void init() {
 		// initialize two initial images
+		TargetArea target1 = TargetArea.builder()
+			.xMin(579).xMax(635)
+			.yMin(427).yMax(560)
+			.build();
         ImageInfo img1 = ImageInfo.builder()
 			.fileName("1")
 			.type("jpg")
 			.imageWidth(2208)
 			.imageHeight(1400)
-			.target(null)
+			.target(target1)
+			.build();
+		TargetArea target2 = TargetArea.builder()
+			.xMin(161).xMax(145)
+			.yMin(197).yMax(196)
 			.build();
 		ImageInfo img2 = ImageInfo.builder()
 			.fileName("2")
 			.type("png")
 			.imageWidth(1024)
 			.imageHeight(768)
-			.target(null)
+			.target(target2)
 			.build();
         imageInfoRepository.save(img1);
         imageInfoRepository.save(img2);

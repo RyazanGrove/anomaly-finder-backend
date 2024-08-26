@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,22 @@ public class ImageInfo {
     private int imageWidth;
 
     private int imageHeight;
+ 
+    @Embedded
+    private TargetArea target;
 
-    private String target;
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class TargetArea {
+
+        public int xMin;
+
+        public int xMax;
+
+        public int yMin;
+
+        public int yMax;
+    }
 }
