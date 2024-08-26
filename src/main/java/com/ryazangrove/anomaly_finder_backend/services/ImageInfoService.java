@@ -3,6 +3,7 @@ package com.ryazangrove.anomaly_finder_backend.services;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import com.ryazangrove.anomaly_finder_backend.repository.ImageInfoRepository;
 
 @Service
 public class ImageInfoService {
+
+    private static final int CURRENTLY_SUPPORTED_NUMBER_OF_IMAGE_INFOS = 2;
     
     @Autowired
     private ImageInfoRepository imageInfoRepository;
@@ -41,5 +44,9 @@ public class ImageInfoService {
 
     private Optional<ImageInfo> getImageInfoByImageFileName(String imageFileName){
         return imageInfoRepository.findByFileName(imageFileName);
+    }
+
+    public List<ImageInfo> getRandomImageInfo() {
+        return imageInfoRepository.getRandomImageInfos(CURRENTLY_SUPPORTED_NUMBER_OF_IMAGE_INFOS);
     }
 }
