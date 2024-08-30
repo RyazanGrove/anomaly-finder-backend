@@ -24,8 +24,8 @@ public class DatabaseInitializer {
     public void init() {
 		// initialize two initial images
 		TargetArea target1 = TargetArea.builder()
-			.xMin(579).xMax(635)
-			.yMin(427).yMax(560)
+			.xMin(580).xMax(643)
+			.yMin(428).yMax(506)
 			.build();
         ImageInfo img1 = ImageInfo.builder()
 			.fileName("1")
@@ -35,8 +35,8 @@ public class DatabaseInitializer {
 			.target(target1)
 			.build();
 		TargetArea target2 = TargetArea.builder()
-			.xMin(161).xMax(197)
-			.yMin(145).yMax(196)
+			.xMin(162).xMax(196)
+			.yMin(145).yMax(192)
 			.build();
 		ImageInfo img2 = ImageInfo.builder()
 			.fileName("2")
