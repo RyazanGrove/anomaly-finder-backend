@@ -9,6 +9,6 @@ public class VersionController {
 
     @GetMapping("/version")
     public ResponseEntity<String> version() {
-        return ResponseEntity.ok("0.1.1");
+        return ResponseEntity.ok("0.2.0");
     }
 }
