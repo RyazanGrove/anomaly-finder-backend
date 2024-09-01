@@ -40,5 +40,14 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
+    
+    @GetMapping()
+    public ResponseEntity<?> getImages() {
+        throw new NotImplementedException("This method is not implemented yet.");
+    }
 
+    @PostMapping()
+    public ResponseEntity<?> postImage() {
+        throw new NotImplementedException("This method is not implemented yet.");
+    }
 }
