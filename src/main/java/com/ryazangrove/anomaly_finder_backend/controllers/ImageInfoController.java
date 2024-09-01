@@ -2,10 +2,12 @@ package com.ryazangrove.anomaly_finder_backend.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryazangrove.anomaly_finder_backend.exceptions.ImageInfoNotFoundException;
+import com.ryazangrove.anomaly_finder_backend.exceptions.NotImplementedException;
 import com.ryazangrove.anomaly_finder_backend.models.ImageInfo;
 import com.ryazangrove.anomaly_finder_backend.services.ImageInfoService;
 
@@ -34,5 +36,15 @@ public class ImageInfoController {
     @GetMapping("/generate")
     public ResponseEntity<List<ImageInfo>> getGeneratedImageInfos() {
         return ResponseEntity.ok(imageInfoService.getRandomImageInfo());
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getImageInfos() {
+        throw new NotImplementedException("This method is not implemented yet.");
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> postImageInfo() {
+        throw new NotImplementedException("This method is not implemented yet.");
     }
 }
