@@ -17,7 +17,7 @@ import com.ryazangrove.anomaly_finder_backend.services.ScoreService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/score")
+@RequestMapping("/scores")
 public class ScoreController {
 
     @Autowired
