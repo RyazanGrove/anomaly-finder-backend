@@ -30,25 +30,22 @@ public class ScoreServiceTest {
     @Test
     public void shouldReturnListOfScores() {
         // Arrange
-        when(scoreRepository.findAll()).thenReturn(Arrays.asList(
-                new Score(101l, 21000l, "John Doe"),
-                new Score(102l, 5600l, "Jane Doe")
-        ));
+        Score score1 = Score.builder()
+            .id(101l).score(21000l)
+            .nickname("John Doe").build();
+        Score score2 = Score.builder()
+            .id(102l).score(5600l)
+            .nickname("Jane Doe").build();
+        when(scoreRepository.findAll()).thenReturn(Arrays.asList(score1, score2));
 
         // Act
         List<Score> scores = scoreService.getScores();
 
         // Assert
         verify(scoreRepository, times(1)).findAll();
-        assertEquals(scores.size(), 2);
-        Score score0 = scores.get(0);
-        assertEquals(score0.getId(), 101l);
-        assertEquals(score0.getScore(), 21000l);
-        assertEquals(score0.getNickname(), "John Doe");
-        Score score1 = scores.get(1);
-        assertEquals(score1.getId(), 102l);
-        assertEquals(score1.getScore(), 5600l);
-        assertEquals(score1.getNickname(), "Jane Doe");
+        assertEquals(2, scores.size());
+        assertEquals(score1, scores.get(0));
+        assertEquals(score2, scores.get(1));
     }
 
     @Test
@@ -71,9 +68,7 @@ public class ScoreServiceTest {
         Score returnScore = scoreService.getScore(scoreId);
 
         verify(scoreRepository, times(1)).findById(scoreId);
-        assertEquals(returnScore.getId(), score.getId());
-        assertEquals(returnScore.getScore(), score.getScore());
-        assertEquals(returnScore.getNickname(), score.getNickname());
+        assertEquals(score, returnScore);
     }
 
     @Test
@@ -81,10 +76,10 @@ public class ScoreServiceTest {
         Long scoreId = 100l;
         when(scoreRepository.findById(scoreId)).thenThrow(new ScoreNotFoundException(scoreId));
 
-        try{
+        try {
             scoreService.getScore(scoreId);
         } catch (ScoreNotFoundException e) {
-            assertEquals(e.getMessage(), "Could not find score with id " + scoreId);
+            assertEquals("Could not find score with id " + scoreId, e.getMessage());
         }
 
         verify(scoreRepository, times(1)).findById(scoreId);
