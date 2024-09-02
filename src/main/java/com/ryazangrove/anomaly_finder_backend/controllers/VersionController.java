@@ -26,7 +26,7 @@ public class VersionController {
     @GetMapping("/version")
     public ResponseEntity<?> version() {
         Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("version", "0.2.0");
+        responseMap.put("version", "0.3.0");
         return ResponseEntity.ok(responseMap);
     }
 }
