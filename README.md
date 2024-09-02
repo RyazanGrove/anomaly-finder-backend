@@ -1,5 +1,5 @@
 # Anomaly Finder Backend
-Backend application for Anomaly Finder game. Provides API for generating a new sequence of images,where player should correctly locate the target, and storing the scores.
+Backend application for Anomaly Finder game. Provides API for generating a new sequence of images, where player should correctly locate the target, and storing the scores.
 
 ## Related project repositories
 [Anomaly Finder Frontend](https://github.com/RyazanGrove/anomaly-finder-frontend)
