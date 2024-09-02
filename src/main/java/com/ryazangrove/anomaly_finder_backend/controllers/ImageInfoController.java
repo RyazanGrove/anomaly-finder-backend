@@ -35,7 +35,7 @@ public class ImageInfoController {
 
     @GetMapping("/generate")
     public ResponseEntity<List<ImageInfo>> getGeneratedImageInfos() {
-        return ResponseEntity.ok(imageInfoService.getRandomImageInfo());
+        return ResponseEntity.ok(imageInfoService.getRandomImageInfos());
     }
 
     @GetMapping()

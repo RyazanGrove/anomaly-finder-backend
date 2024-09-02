@@ -46,7 +46,7 @@ public class ImageInfoService {
         return imageInfoRepository.findByFileName(imageFileName);
     }
 
-    public List<ImageInfo> getRandomImageInfo() {
+    public List<ImageInfo> getRandomImageInfos() {
         return imageInfoRepository.getRandomImageInfos(CURRENTLY_SUPPORTED_NUMBER_OF_IMAGE_INFOS);
     }
 }
