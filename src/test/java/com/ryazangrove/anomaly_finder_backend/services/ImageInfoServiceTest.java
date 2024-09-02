@@ -31,19 +31,40 @@ public class ImageInfoServiceTest {
     @InjectMocks
     private ImageInfoService imageInfoService;
 
+    private ArrayList<ImageInfo> returnMockDataArray() {
+        TargetArea target1 = TargetArea.builder()
+            .xMin(580).xMax(643)
+            .yMin(428).yMax(506)
+            .build();
+        ImageInfo imageInfo1 = ImageInfo.builder()
+            .fileName("1")
+            .type("jpg")
+            .imageWidth(2208)
+            .imageHeight(1400)
+            .target(target1)
+            .build();
+        TargetArea target2 = TargetArea.builder()
+            .xMin(162).xMax(196)
+            .yMin(145).yMax(192)
+            .build();
+        ImageInfo imageInfo2 = ImageInfo.builder()
+            .fileName("2")
+            .type("png")
+            .imageWidth(1024)
+            .imageHeight(768)
+            .target(target2)
+            .build();
+
+        ArrayList<ImageInfo> sequence = new ArrayList<ImageInfo>();
+        sequence.add(imageInfo1);
+        sequence.add(imageInfo2);
+
+        return sequence;
+    }
+
     @Test
     public void shouldSaveImageInfo() {
-        TargetArea targetArea = TargetArea.builder()
-			.xMin(580).xMax(643)
-			.yMin(428).yMax(506)
-			.build();
-        ImageInfo imageInfo = ImageInfo.builder()
-			.fileName("1")
-			.type("jpg")
-			.imageWidth(2208)
-			.imageHeight(1400)
-			.target(targetArea)
-			.build();
+        ImageInfo imageInfo = returnMockDataArray().get(0);
 
         imageInfoService.saveImageInfo(imageInfo);
 
@@ -53,17 +74,7 @@ public class ImageInfoServiceTest {
     @Test
     public void shouldReturnImageInfoById() {
         Long imageInfoId = 100l;
-        TargetArea targetArea = TargetArea.builder()
-            .xMin(580).xMax(643)
-            .yMin(428).yMax(506)
-            .build();
-        ImageInfo imageInfo = ImageInfo.builder()
-            .fileName("1")
-            .type("jpg")
-            .imageWidth(2208)
-            .imageHeight(1400)
-            .target(targetArea)
-            .build();
+        ImageInfo imageInfo = returnMockDataArray().get(0);
         when(imageInfoRepository.findById(imageInfoId)).thenReturn(Optional.of(imageInfo));
 
         ImageInfo info = imageInfoService.getImageInfo(imageInfoId);
@@ -88,59 +99,43 @@ public class ImageInfoServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenImageInfoByImageFileNameNotFound() {
-        String imageFileName = "123";
+        String imageFileName = "do_not_exist";
         when(imageInfoRepository.findByFileName(imageFileName)).thenThrow(new ImageInfoNotFoundException(imageFileName));
+        String errorMessage = "";
 
         try{
             imageInfoService.loadImage(imageFileName);
         } catch (ImageInfoNotFoundException e) {
-            assertEquals("Could not find metadata for image with file name " + imageFileName, e.getMessage());
+            errorMessage = e.getMessage();
         }
-
+        
+        assertEquals("Could not find metadata for image with file name " + imageFileName, errorMessage);
         verify(imageInfoRepository, times(1)).findByFileName(imageFileName);
     }
 
     @Test
     public void shouldThrowExceptionWhenImageByImageFileNameNotFound() {
         String imageFileName = "123";
-        TargetArea targetArea = TargetArea.builder()
-            .xMin(580).xMax(643)
-            .yMin(428).yMax(506)
-            .build();
-        ImageInfo imageInfo = ImageInfo.builder()
-            .fileName("do_not_exist")
-            .type("jpg")
-            .imageWidth(2208)
-            .imageHeight(1400)
-            .target(targetArea)
-            .build();
+        ImageInfo imageInfo = returnMockDataArray().get(0);
+        imageInfo.setFileName(imageFileName);
         when(imageInfoRepository.findByFileName(imageFileName)).thenReturn(Optional.of(imageInfo));
+        String errorMessage = "";
 
         try{
             imageInfoService.loadImage(imageFileName);
         } catch (ImageNotFoundException e) {
-            assertEquals("Could not find image with file name " + imageFileName, e.getMessage());
+            errorMessage = e.getMessage();
         }
-
+        
+        assertEquals("Could not find image with file name " + imageFileName, errorMessage);
         verify(imageInfoRepository, times(1)).findByFileName(imageFileName);
     }
 
     @Test
     public void shouldReturnInputStreamOfFoundedImage() {
         String imageFileName = "1";
-        TargetArea targetArea = TargetArea.builder()
-            .xMin(580).xMax(643)
-            .yMin(428).yMax(506)
-            .build();
-        ImageInfo imageInfo = ImageInfo.builder()
-            .fileName("1")
-            .type("jpg")
-            .imageWidth(2208)
-            .imageHeight(1400)
-            .target(targetArea)
-            .build();
+        ImageInfo imageInfo = returnMockDataArray().get(0);
         when(imageInfoRepository.findByFileName(imageFileName)).thenReturn(Optional.of(imageInfo));
-
         
         InputStream stream = imageInfoService.loadImage(imageFileName);
         
@@ -150,35 +145,9 @@ public class ImageInfoServiceTest {
 
     @Test
     public void shouldReturnRandomSequenceOfImageInfos() {
-        TargetArea target1 = TargetArea.builder()
-            .xMin(580).xMax(643)
-            .yMin(428).yMax(506)
-            .build();
-        ImageInfo imageInfo1 = ImageInfo.builder()
-            .fileName("1")
-            .type("jpg")
-            .imageWidth(2208)
-            .imageHeight(1400)
-            .target(target1)
-            .build();
-        TargetArea target2 = TargetArea.builder()
-            .xMin(162).xMax(196)
-            .yMin(145).yMax(192)
-            .build();
-        ImageInfo imageInfo2 = ImageInfo.builder()
-            .fileName("2")
-            .type("png")
-            .imageWidth(1024)
-            .imageHeight(768)
-            .target(target2)
-            .build();
-
-        List<ImageInfo> sequence = new ArrayList<ImageInfo>();
-        sequence.add(imageInfo2);
-        sequence.add(imageInfo1);
+        List<ImageInfo> sequence = returnMockDataArray();
         when(imageInfoRepository.getRandomImageInfos(2)).thenReturn(sequence);
 
-        
         List<ImageInfo> returnSequence = imageInfoService.getRandomImageInfos();
         
         verify(imageInfoRepository, times(1)).getRandomImageInfos(2);
