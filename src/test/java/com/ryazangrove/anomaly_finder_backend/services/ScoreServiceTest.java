@@ -5,12 +5,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.ryazangrove.anomaly_finder_backend.exceptions.ScoreNotFoundException;
 import com.ryazangrove.anomaly_finder_backend.models.Score;
 import com.ryazangrove.anomaly_finder_backend.repository.ScoreRepository;
 
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -58,5 +60,33 @@ public class ScoreServiceTest {
         scoreService.saveScore(score);
 
         verify(scoreRepository, times(1)).save(score);
+    }
+
+    @Test
+    public void shouldReturnScoreById() {
+        Long scoreId = 100l;
+        Score score = Score.builder().id(scoreId).score(10000l).nickname("John Doe").build();
+        when(scoreRepository.findById(scoreId)).thenReturn(Optional.of(score));
+
+        Score returnScore = scoreService.getScore(scoreId);
+
+        verify(scoreRepository, times(1)).findById(scoreId);
+        assertEquals(returnScore.getId(), score.getId());
+        assertEquals(returnScore.getScore(), score.getScore());
+        assertEquals(returnScore.getNickname(), score.getNickname());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenScoreByIdNotFound() {
+        Long scoreId = 100l;
+        when(scoreRepository.findById(scoreId)).thenThrow(new ScoreNotFoundException(scoreId));
+
+        try{
+            scoreService.getScore(scoreId);
+        } catch (ScoreNotFoundException e) {
+            assertEquals(e.getMessage(), "Could not find score with id " + scoreId);
+        }
+
+        verify(scoreRepository, times(1)).findById(scoreId);
     }
 }
