@@ -50,6 +50,9 @@ By default application stores all the data in H2 Runtime Database, which could b
 Application uses automatic documentation generation tools. APIs, Data Schemas and Methods' descriptions could be found in Swagger UI:
 `http://localhost:8080/swagger-ui/index.html`
 
+### Architectural Decision Record, Technical debt
+Architectural Decision Record (ADR) and Technical Debt records are located in `docs` folder.
+
 ## Configuration
 The application can be configured via the `src/main/resources/application.properties` file
 
