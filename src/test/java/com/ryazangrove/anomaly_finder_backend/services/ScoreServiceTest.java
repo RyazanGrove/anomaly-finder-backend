@@ -1,10 +1,8 @@
 package com.ryazangrove.anomaly_finder_backend.services;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ryazangrove.anomaly_finder_backend.models.Score;
@@ -19,7 +17,6 @@ import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
 public class ScoreServiceTest {
     
     @Mock
@@ -50,5 +47,16 @@ public class ScoreServiceTest {
         assertEquals(score1.getId(), 102l);
         assertEquals(score1.getScore(), 5600l);
         assertEquals(score1.getNickname(), "Jane Doe");
+    }
+
+    @Test
+    public void shouldSaveScore() {
+        Score score = Score.builder()
+            .id(0l).score(1000l)
+            .nickname("John Doe").build();
+
+        scoreService.saveScore(score);
+
+        verify(scoreRepository, times(1)).save(score);
     }
 }
